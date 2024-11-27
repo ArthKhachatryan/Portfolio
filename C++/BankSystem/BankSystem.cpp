@@ -5,6 +5,7 @@ using namespace std;
 class Account {
 public:
     string accNum;
+    string name;
 
     Account(string accNum, string name, double balance) : accNum(accNum), name(name), balance(balance) {}
 
@@ -35,7 +36,6 @@ public:
     }
 
 private:
-    string name;
     double balance;
 };
 
@@ -70,14 +70,27 @@ public:
         cout << "Account not found!" << endl;
     }
 
+    void searchAccountByName(const string& name) {
+        bool found = false;
+        for (Account& account : accounts) {
+            if (account.name == name) {
+                account.showBalance();
+                found = true;
+            }
+        }
+        if (!found) {
+            cout << "No account found with name " << name << endl;
+        }
+    }
+
     void transferMoney(const string& fromAccNum, const string& toAccNum, double amount) {
         Account* fromAcc = findAccount(fromAccNum);
         Account* toAcc = findAccount(toAccNum);
 
         if (fromAcc && toAcc) {
             if (fromAcc->getBalance() >= amount) {
-                fromAcc->withdraw(amount);  // Withdraw from the source account
-                toAcc->deposit(amount);     // Deposit to the destination account
+                fromAcc->withdraw(amount);
+                toAcc->deposit(amount);
                 cout << "Transfer of $" << amount << " from " << fromAccNum << " to " << toAccNum << " completed." << endl;
             } else {
                 cout << "Insufficient funds for transfer!" << endl;
@@ -93,7 +106,7 @@ int main() {
     double money;
 
     do {
-        cout << "1. Create Account\n2. Deposit\n3. Withdraw\n4. Check Balance\n5. Delete Account\n6. Transfer Money\n7. Exit\nChoose an option: ";
+        cout << "1. Create Account\n2. Deposit\n3. Withdraw\n4. Check Balance\n5. Delete Account\n6. Transfer Money\n7. Search Account by Name\n8. Exit\nChoose an option: ";
         cin >> option;
 
         if (option == 1) {
@@ -139,12 +152,16 @@ int main() {
             cin >> money;
             BestBank.transferMoney(fromAccNum, toAccNum, money);
         } else if (option == 7) {
+            cout << "Enter name to search: ";
+            cin >> name;
+            BestBank.searchAccountByName(name);
+        } else if (option == 8) {
             cout << "Exiting..." << endl;
         } else {
             cout << "Invalid input!" << endl;
         }
 
-    } while (option != 7);
+    } while (option != 8);
 
     return 0;
 }
