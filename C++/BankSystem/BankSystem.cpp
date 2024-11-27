@@ -22,12 +22,16 @@ public:
         }
     }
 
-    void showBalance() {
-        cout << "Account: " << accNum << ", Name: " << name << ", Balance: " << balance << endl;
+    void showBalance() const {
+        cout << "Account: " << accNum << ", Name: " << name << ", Balance: $" << balance << endl;
     }
 
     string getAccountNumber() const {
         return accNum;
+    }
+
+    double getBalance() const {
+        return balance;
     }
 
 private:
@@ -65,16 +69,31 @@ public:
         }
         cout << "Account not found!" << endl;
     }
+
+    void transferMoney(const string& fromAccNum, const string& toAccNum, double amount) {
+        Account* fromAcc = findAccount(fromAccNum);
+        Account* toAcc = findAccount(toAccNum);
+
+        if (fromAcc && toAcc) {
+            if (fromAcc->getBalance() >= amount) {
+                fromAcc->withdraw(amount);  // Withdraw from the source account
+                toAcc->deposit(amount);     // Deposit to the destination account
+                cout << "Transfer of $" << amount << " from " << fromAccNum << " to " << toAccNum << " completed." << endl;
+            } else {
+                cout << "Insufficient funds for transfer!" << endl;
+            }
+        }
+    }
 };
 
 int main() {
     Bank BestBank;
     int option;
-    string accNum, name;
+    string accNum, name, fromAccNum, toAccNum;
     double money;
 
     do {
-        cout << "1. Create Account\n2. Deposit\n3. Withdraw\n4. Check Balance\n5. Delete Account\n6. Exit\nChoose an option: ";
+        cout << "1. Create Account\n2. Deposit\n3. Withdraw\n4. Check Balance\n5. Delete Account\n6. Transfer Money\n7. Exit\nChoose an option: ";
         cin >> option;
 
         if (option == 1) {
@@ -112,12 +131,20 @@ int main() {
             cin >> accNum;
             BestBank.deleteAccount(accNum);
         } else if (option == 6) {
+            cout << "Enter source account number: ";
+            cin >> fromAccNum;
+            cout << "Enter destination account number: ";
+            cin >> toAccNum;
+            cout << "Enter amount to transfer: ";
+            cin >> money;
+            BestBank.transferMoney(fromAccNum, toAccNum, money);
+        } else if (option == 7) {
             cout << "Exiting..." << endl;
         } else {
             cout << "Invalid input!" << endl;
         }
 
-    } while (option != 6);
+    } while (option != 7);
 
     return 0;
 }
