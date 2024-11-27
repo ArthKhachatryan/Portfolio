@@ -97,6 +97,14 @@ public:
             }
         }
     }
+
+    void showTotalBalance() {
+        double totalBalance = 0;
+        for (const Account& account : accounts) {
+            totalBalance += account.getBalance();
+        }
+        cout << "The total balance across all accounts is: $" << totalBalance << endl;
+    }
 };
 
 int main() {
@@ -106,7 +114,7 @@ int main() {
     double money;
 
     do {
-        cout << "1. Create Account\n2. Deposit\n3. Withdraw\n4. Check Balance\n5. Delete Account\n6. Transfer Money\n7. Search Account by Name\n8. Exit\nChoose an option: ";
+        cout << "1. Create Account\n2. Deposit\n3. Withdraw\n4. Check Balance\n5. Delete Account\n6. Transfer Money\n7. Search Account by Name\n8. Show Total Balance\n9. Exit\nChoose an option: ";
         cin >> option;
 
         if (option == 1) {
@@ -156,12 +164,14 @@ int main() {
             cin >> name;
             BestBank.searchAccountByName(name);
         } else if (option == 8) {
+            BestBank.showTotalBalance();
+        } else if (option == 9) {
             cout << "Exiting..." << endl;
         } else {
             cout << "Invalid input!" << endl;
         }
 
-    } while (option != 8);
+    } while (option != 9);
 
     return 0;
 }
