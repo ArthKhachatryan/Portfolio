@@ -4,6 +4,13 @@
 class Vector{
     public:
     Vector() : m_capacity{4},m_size{0},m_arr{new int[m_capacity]} {}
+    Vector(const Vector& other) {
+        m_capacity = other.m_capacity;
+        m_size = other.m_size;
+        m_arr = new int[m_capacity];
+        for(int i = 0; i < m_size; i ++)
+            m_arr[i] = other.m_arr[i];
+    }
     ~Vector(){
         delete [] m_arr;
     }
@@ -46,8 +53,26 @@ int & operator[](int subscript){
     return m_arr[subscript];
 }   
 
+Vector& operator=(const Vector& v){
+    if(this == &v)
+    return *this;
+    delete [] m_arr;
+     m_capacity = v.m_capacity;
+        m_size = v.m_size;
+        m_arr = new int[m_capacity];
+        for(int i = 0; i < m_size; i ++)
+            m_arr[i] = v.m_arr[i];
+    return *this;
+}
+
 int size(){
     return m_size;
+}
+
+void print(){
+    for(int i = 0; i < m_size; i ++)
+     std::cout << m_arr[i] << " ";
+     std::cout <<"\n";
 }
 
    private:
@@ -58,7 +83,8 @@ int size(){
 
 int main(){
     Vector v;
-
+    Vector v2;
+    Vector v3;
     v.push_back(10);
     v.push_back(11);
     v.push_back(12);
@@ -70,10 +96,23 @@ int main(){
     v.push_front(19);
     v.push_front(20);
     v.push_front(21);
-    
-    for(int i = 0; i < v.size(); i++){
-     std::cout << v[i] << std::endl;
-    }
+
+    v2.push_back(10);
+    v2.push_back(78);
+    std::cout << "Vector v:\n";
+    v.print();
+    Vector v1(v);
+    std::cout << "Vector v after Vector v1(v):\n";
+    v.print();
+    std::cout << "Vector v1 after Vector v1(v):\n";
+    v1.print();
+    v3 = v1 = v2;
+    std::cout << "Vector v1 after v3 = v1 = v2:\n";
+    v1.print();
+    std::cout << "Vector v2 after v3 = v1 = v2:\n";
+    v2.print();
+    std::cout << "Vector v2 after v3 = v1 = v2:\n";
+    v3.print();
 
     return 0;
 }
