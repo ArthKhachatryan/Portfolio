@@ -10,6 +10,15 @@ Node(int data):data(data){}
 class BST{
     Node* root = nullptr;
 
+    Node* search(Node* root,int data){
+        if(root == nullptr || data == root->data)
+        return root;
+        if(data > root->data)
+            return search(root->right,data);
+
+        return search(root->left,data);
+    }
+
     Node* insert(Node* root,int data){
     if(root == nullptr)
         return new Node(data);
@@ -35,6 +44,12 @@ class BST{
     void inorderTraversal(){
         inorderTraversal(root);
     }
+    void search(int data){
+        if(search(root,data) == nullptr)
+            std::cout << "\nNot found";
+        else
+            std::cout << "\nFound";
+    }
     
     
 };
@@ -53,6 +68,6 @@ int main(){
     bst.insert(14);
     bst.inorderTraversal();
 
-
-
+    bst.search(10);
+    bst.search(111);
 }
