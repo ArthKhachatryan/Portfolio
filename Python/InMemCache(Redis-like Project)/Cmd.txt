@@ -1,0 +1,9 @@
+#Commands for testing
+from InMemCache import Client
+c = Client()
+
+print(c.set("foo", "bar"))  
+print(c.get("foo"))     
+print(c.get("nope"))      
+print(c.delete("foo"))     
+print(c.delete("foo"))
